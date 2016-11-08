@@ -725,7 +725,30 @@
               URL encoder/decoder
           </h3>
 
-          <textarea style="width:100%; height:60px;" placeholder="Place text to URL encode/decode here"></textarea>
+          <textarea id="URI-encoder" onPaste="autoRunEncoderDecoder()" style="width:100%; height:60px;" placeholder="Paste text to URL encode or decode"></textarea>
+          <script type="text/javascript">
+            var encoderElement = document.getElementById('URI-encoder');
+            function runEncoder(v) {
+                var input = v ? v : encoderElement.value;
+                encoderElement.value = encodeURIComponent(input).replace(/'/g,"%27").replace(/"/g,"%22");  
+            }
+            function runDecoder(v) {
+                var input = (v ? v : encoderElement.value).replace(/\+/g,  " ");
+                encoderElement.value = decodeURIComponent(input);
+            }
+            function autoRunEncoderDecoder() {
+                setTimeout(
+                    function(){
+                        var v = encoderElement.value;
+                        if(v.indexOf("%")>=0) {
+                            runDecoder(v);
+                        } else {
+                            runEncoder(v);      
+                        }
+                }, 100);
+            }
+          </script>
+
         </section>
 
         <aside id="sidebar">
