@@ -29,6 +29,38 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
+
+          <h3>
+              <a id="url-encoding" class="anchor" href="#url-encoding" aria-hidden="true">
+                  <span aria-hidden="true" class="octicon octicon-link"></span>
+              </a>
+              URL encoder/decoder
+          </h3>
+
+          <textarea id="URI-encoder" onPaste="autoRunEncoderDecoder()" style="width:100%; height:60px;" placeholder="Paste text to URL encode or decode"></textarea>
+          <script type="text/javascript">
+            var encoderElement = document.getElementById('URI-encoder');
+            function runEncoder(v) {
+                var input = v ? v : encoderElement.value;
+                encoderElement.value = encodeURIComponent(input).replace(/'/g,"%27").replace(/"/g,"%22");
+            }
+            function runDecoder(v) {
+                var input = (v ? v : encoderElement.value).replace(/\+/g,  " ");
+                encoderElement.value = decodeURIComponent(input);
+            }
+            function autoRunEncoderDecoder() {
+                setTimeout(
+                    function(){
+                        var v = encoderElement.value;
+                        if(v.indexOf("%")>=0) {
+                            runDecoder(v);
+                        } else {
+                            runEncoder(v);
+                        }
+                }, 100);
+            }
+          </script>
+
           <h3>
               <a id="unicode-emoji" class="anchor" href="#emoji" aria-hidden="true">
                   <span aria-hidden="true" class="octicon octicon-link"></span>
@@ -718,37 +750,6 @@
              <span>💻  Mac edit/Emoji+Symbols menu: ^⌘ Space</span>
          </li>
      </ul>
-
-          <h3>
-              <a id="url-encoding" class="anchor" href="#url-encoding" aria-hidden="true">
-                  <span aria-hidden="true" class="octicon octicon-link"></span>
-              </a>
-              URL encoder/decoder
-          </h3>
-
-          <textarea id="URI-encoder" onPaste="autoRunEncoderDecoder()" style="width:100%; height:60px;" placeholder="Paste text to URL encode or decode"></textarea>
-          <script type="text/javascript">
-            var encoderElement = document.getElementById('URI-encoder');
-            function runEncoder(v) {
-                var input = v ? v : encoderElement.value;
-                encoderElement.value = encodeURIComponent(input).replace(/'/g,"%27").replace(/"/g,"%22");  
-            }
-            function runDecoder(v) {
-                var input = (v ? v : encoderElement.value).replace(/\+/g,  " ");
-                encoderElement.value = decodeURIComponent(input);
-            }
-            function autoRunEncoderDecoder() {
-                setTimeout(
-                    function(){
-                        var v = encoderElement.value;
-                        if(v.indexOf("%")>=0) {
-                            runDecoder(v);
-                        } else {
-                            runEncoder(v);      
-                        }
-                }, 100);
-            }
-          </script>
 
         </section>
 
