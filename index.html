@@ -61,6 +61,25 @@
             }
           </script>
 
+          
+          <h3>
+              <a id="base64-encoding" class="anchor" href="#url-encoding" aria-hidden="true">
+                  <span aria-hidden="true" class="octicon octicon-link"></span>
+              </a>
+              Base64 Encode
+          </h3>
+          <textarea id="base64-encoder" onPaste="autoRunBase64Encoder()" style="width:100%; height:60px;" placeholder="Paste text to base64 encode"></textarea>
+          <script type="text/javascript">
+            var base64EncoderElement = document.getElementById('base64-encoder');
+            function autoRunBase64Encoder() {
+                setTimeout(
+                    function(){
+                        var v = base64EncoderElement.value;
+                        base64EncoderElement.value = btoa(v);
+                }, 100);
+            }
+          </script>
+
           <h3>
               <a id="unicode-emoji" class="anchor" href="#emoji" aria-hidden="true">
                   <span aria-hidden="true" class="octicon octicon-link"></span>
