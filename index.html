@@ -57,6 +57,7 @@
                         } else {
                             runEncoder(v);
                         }
+                        encoderElement.select();
                 }, 100);
             }
           </script>
@@ -84,6 +85,7 @@
                                 var encoded = btoa(v);
                                 base64EncoderElement.value = encoded;
                             }
+                            base64EncoderElement.select();
                         }
 
                 }, 100);
