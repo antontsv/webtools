@@ -879,3 +879,6 @@ footer a:hover {
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) { }
 
+#base64-encode, #base64-decode, #url-encode, #url-decode {
+  cursor: pointer;
+}
