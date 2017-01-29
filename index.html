@@ -31,6 +31,67 @@
         <section id="main-content">
 
           <h3>
+              <a id="json-format" class="anchor" href="#json" aria-hidden="true">
+                  <span aria-hidden="true" class="octicon octicon-link"></span>
+              </a>
+              JSON <span id="json-format" onClick="runJSONFormatter()">format</span>
+
+          </h3>
+          <style type="text/css">
+            #json-out {display:none; outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+             .string { color: green; }
+            .number { color: darkorange; }
+            .boolean { color: blue; }
+            .null { color: magenta; }
+            .key { color: red; }
+          </style>
+          <textarea id="json-formater-input" onPaste="runJSONFormatterOnPaste()" style="width:100%; height:60px;" placeholder="Paste JSON to format & pretty-print" onKeydown="CTRLCheck(event,'json')"></textarea>
+          <pre id="json-out"></pre>
+          <script type="text/javascript">
+            var jsonInputElement = document.getElementById("json-formater-input");
+            var jsonOutputElement = document.getElementById("json-out");
+            function outputJSON(inp) {
+                jsonOutputElement.innerHTML = inp;
+                jsonOutputElement.style.display = 'inherit';
+            }
+
+            function runJSONFormatterOnPaste() {
+                setTimeout(runJSONFormatter, 100);
+            }
+
+            var runJSONFormatter = function (){
+                var v = jsonInputElement.value;
+                try {
+                    var j = JSON.parse(v);
+                    outputJSON(syntaxHighlight(JSON.stringify(j, undefined, 4)));
+                } catch (e) {
+                    outputJSON("^ Malformed JSON ^ <br>" + e.message);
+                }
+            }
+
+            function syntaxHighlight(json) {
+                        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+                          function (match) {
+                                var cls = 'number';
+                                if (/^"/.test(match)) {
+                                    if (/:$/.test(match)) {
+                                        cls = 'key';
+                                    } else {
+                                        cls = 'string';
+                                    }
+                                } else if (/true|false/.test(match)) {
+                                    cls = 'boolean';
+                                } else if (/null/.test(match)) {
+                                    cls = 'null';
+                                }
+                                return '<span class="' + cls + '">' + match + '</span>';
+                          });
+              }
+
+          </script>
+
+          <h3>
               <a id="url-encoding" class="anchor" href="#url-encoding" aria-hidden="true">
                   <span aria-hidden="true" class="octicon octicon-link"></span>
               </a>
@@ -52,6 +113,11 @@
                                 elementType == 'url' ? runURLDecoder() : base64Decode();
                                 event.preventDefault();
                                 break;
+                            case 70: //CTRL+f
+                               if (elementType == 'json'){
+                                   event.preventDefault();
+                                   runJSONFormatter();
+                               }
                         }
                     }
                 }
@@ -793,6 +859,9 @@
      </p>
 
      <ul>
+         <li>
+             <a href="http://jsfiddle.net/KJQ9K/1599/">JSON format on JSFiddle</a>
+         </li>
          <li>
              <a href="http://apps.timwhitlock.info/emoji/tables/unicode">Tim Whitlock's apps</a>
          </li>
