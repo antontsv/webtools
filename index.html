@@ -64,8 +64,24 @@
                 try {
                     var j = JSON.parse(v);
                     outputJSON(syntaxHighlight(JSON.stringify(j, undefined, 4)));
+                    selectContent(jsonOutputElement);
                 } catch (e) {
                     outputJSON("^ Malformed JSON ^ <br>" + e.message);
+                }
+            }
+
+            function selectContent(element) {
+                var range,selection ;
+                if (document.body.createTextRange) {
+                    range = document.body.createTextRange();
+                    range.moveToElementText(element);
+                    range.select();
+                } else if (window.getSelection) {
+                    selection = window.getSelection();
+                    range = document.createRange();
+                    range.selectNodeContents(element);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
                 }
             }
 
