@@ -197,6 +197,57 @@
           </script>
 
           <h3>
+              <a id="html-encoding" class="anchor" name="url" aria-hidden="true">
+                  <span aria-hidden="true" class="octicon octicon-link"></span>
+              </a>
+              HTML <span id="html-encode" onClick="runHTMLEncoder()">encode</span>/<span id="html-decode" onClick="runHTMLDecoder()">decode</span>
+          </h3>
+
+          <textarea id="HTML-encoder" onPaste="autoRunHTMLEncoderDecoder()" style="width:100%; height:60px;" placeholder="Paste markup text to HTML encode or decode"></textarea>
+          <script type="text/javascript">
+            var htmlEntities = {
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#39;',
+              '/': '&#x2F;',
+              '`': '&#x60;',
+              '=': '&#x3D;'
+            };
+            var reverseHtmlEntities = {};
+            var htmlEncodePattern = /[&<>"'`=\/]/g;
+            var htmlDecodePattern = /(&amp;|&lt;|&gt;|&quot;|&#39;|&#x2F;|&#x60;|&#x3D;)/g;
+            for(var key in htmlEntities){
+                reverseHtmlEntities[htmlEntities[key]] = key;
+            }
+            var htmlEncoderElement = document.getElementById('HTML-encoder');
+            function runHTMLEncoder(v) {
+                var input = v ? v : htmlEncoderElement.value;
+                htmlEncoderElement.value = String(input).replace(htmlEncodePattern, function (s) {
+                    return htmlEntities[s];
+                });
+            }
+            function runHTMLDecoder(v) {
+                var input = v ? v : htmlEncoderElement.value;
+                htmlEncoderElement.value = String(input).replace(htmlDecodePattern, function (s) {
+                    return reverseHtmlEntities[s];
+                });
+            }
+            function autoRunHTMLEncoderDecoder() {
+                setTimeout(
+                    function(){
+                        var v = htmlEncoderElement.value;
+                        if(htmlDecodePattern.test(v)) {
+                            runHTMLDecoder(v);
+                        } else {
+                            runHTMLEncoder(v);
+                        }
+                        htmlEncoderElement.select();
+                }, 100);
+            }
+          </script>
+          <h3>
               <a id="unicode-emoji" class="anchor" href="#emoji" aria-hidden="true">
                   <span aria-hidden="true" class="octicon octicon-link"></span>
               </a>
@@ -1220,7 +1271,7 @@
         ╿
      </p>
      <p>
-         🌏 
+         🌏
          🌍
          🌎
          🛫
