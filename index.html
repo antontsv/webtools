@@ -118,15 +118,25 @@
           <script type="text/javascript">
             var encoderElement = document.getElementById('URI-encoder');
             var CTRLCheck=function(event, elementType) {
+                encoding_funcs = {
+                    'url': runURLEncoder,
+                    'base64': base64Encode,
+                    'html': runHTMLEncoder
+                }
+                decoding_funcs = {
+                    'url': runURLDecoder,
+                    'base64': base64Decode,
+                    'html': runHTMLDecoder
+                }
                 if(event && typeof event != undefined){
                     if(event.ctrlKey) {
                         switch(event.keyCode){
                             case 69: //CTRL+e
-                                elementType == 'url' ? runURLEncoder() : base64Encode();
+                                elementType in encoding_funcs && encoding_funcs[elementType]();
                                 event.preventDefault();
                                 break;
                             case 68: //CTRL+d
-                                elementType == 'url' ? runURLDecoder() : base64Decode();
+                                elementType in decoding_funcs && decoding_funcs[elementType]();
                                 event.preventDefault();
                                 break;
                             case 70: //CTRL+f
@@ -203,7 +213,7 @@
               HTML <span id="html-encode" onClick="runHTMLEncoder()">encode</span>/<span id="html-decode" onClick="runHTMLDecoder()">decode</span>
           </h3>
 
-          <textarea id="HTML-encoder" onPaste="autoRunHTMLEncoderDecoder()" style="width:100%; height:60px;" placeholder="Paste markup text to HTML encode or decode"></textarea>
+          <textarea id="HTML-encoder" onPaste="autoRunHTMLEncoderDecoder()" style="width:100%; height:60px;" placeholder="Paste markup text to HTML encode or decode" onKeydown="CTRLCheck(event,'html')"></textarea>
           <script type="text/javascript">
             var htmlEntities = {
               '&': '&amp;',
